@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_add_course"
+    android:name="edu.uw.tacoma.apanlili.WebServicesLab.CourseEditFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CourseEditFragment">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/course_id_hint_edit"
+        android:id="@+id/select_course_id" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/course_short_desc_hint_edit"
+        android:id="@+id/edit_course_short_desc" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/course_long_desc_hint_edit"
+        android:id="@+id/edit_course_long_desc" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/course_prereqs_hint_edit"
+        android:id="@+id/edit_course_prereqs"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/edit_course_text"
+        android:onClick="editCourse"
+        android:id="@+id/edit_course_button"/>
+
+</LinearLayout>
