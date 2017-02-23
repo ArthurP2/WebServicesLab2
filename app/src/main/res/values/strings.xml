@@ -15,4 +15,11 @@
     <string name="course_long_desc_hint_edit">Change long description</string>
     <string name="course_prereqs_hint_edit">Change prereqs</string>
     <string name="edit_course_text">Edit Course</string>
+    <string name="userid_hint">Enter your userid</string>
+    <string name="pwd_hint">Enter your password</string>
+    <string name="login_text">SIGN IN</string>
+    <string name="LOGIN_PREFS">edu.tacoma.uw.webserviceslab.PREFS</string>
+    <string name="LOGGEDIN">loggedin</string>
+    <string name="LOGIN_FILE"> edu.uw.tacoma.mmuppa.webservicelab.LOGIN_FILE</string>
+
 </resources>

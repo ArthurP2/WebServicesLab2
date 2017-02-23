@@ -2,6 +2,8 @@ package apanlili.uw.tacoma.edu.webserviceslab;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -35,7 +38,9 @@ import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Map;
 
+import apanlili.uw.tacoma.edu.webserviceslab.authenticate.SignInActivity;
 import apanlili.uw.tacoma.edu.webserviceslab.course.Course;
+import apanlili.uw.tacoma.edu.webserviceslab.data.CourseDB;
 
 public class CourseActivity extends AppCompatActivity implements CourseFragment.OnListFragmentInteractionListener,
         CourseAddFragment.CourseAddListener, CourseEditFragment.CourseEditListener {
@@ -43,7 +48,7 @@ public class CourseActivity extends AppCompatActivity implements CourseFragment.
     private String UPLOAD_URL = "http://cssgate.insttech.washington.edu/~apanlili/upload2.php";
     private String KEY_IMAGE = "image";
     private String KEY_NAME = "name";
-
+    private CourseDB mCourseDB;
 
     public static Context contextOfApplication;
 
@@ -52,9 +57,16 @@ public class CourseActivity extends AppCompatActivity implements CourseFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCourseDB = new CourseDB(this);
         setContentView(R.layout.activity_course);
         contextOfApplication = getApplicationContext();
-
+        Button btn = (Button) findViewById(R.id.logout_button);
+        btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                logout(v);
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +106,19 @@ public class CourseActivity extends AppCompatActivity implements CourseFragment.
                 .replace(R.id.fragment_container,courseDetailFragment)
                 .addToBackStack(null)
                 .commit();
+
+    }
+
+    private boolean logout(View v){
+        SharedPreferences sharedPreferences =
+                getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false)
+                .commit();
+
+        Intent i = new Intent(this, SignInActivity.class);
+        startActivity(i);
+        finish();
+        return true;
 
     }
 
@@ -180,10 +205,10 @@ public class CourseActivity extends AppCompatActivity implements CourseFragment.
 
 
     public void addCourse(String url, Bitmap bitmap, String id){
+
         uploadImage(bitmap, id);
         AddCourseTask task = new AddCourseTask();
         task.execute(new String[]{url.toString()});
-
         getSupportFragmentManager().popBackStackImmediate();
     }
 

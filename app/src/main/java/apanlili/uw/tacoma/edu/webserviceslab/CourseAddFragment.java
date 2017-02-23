@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Picture;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+
+import apanlili.uw.tacoma.edu.webserviceslab.data.CourseDB;
 
 import static android.R.attr.bitmap;
 import static android.app.Activity.RESULT_OK;
@@ -51,6 +55,7 @@ public class CourseAddFragment extends Fragment {
     private EditText mCoursePrereqsEditText;
     private String mCourseId;
     private Button uploadButton;
+    private CourseDB mCourseDB;
 
     private int PICK_IMAGE_REQUEST = 1;
 
@@ -97,6 +102,7 @@ public class CourseAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mCourseDB = new CourseDB(getActivity());
         View v = inflater.inflate(R.layout.fragment_course_add, container, false);
         imageView = (ImageView)v.findViewById(R.id.imageView);
         mCourseIdEditText = (EditText)v.findViewById(R.id.add_course_id);
@@ -113,17 +119,35 @@ public class CourseAddFragment extends Fragment {
         addCourseButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String url = buildCourseURL(v, COURSE_ADD_URL);
-                Log.i("TAG", url);
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    String url = buildCourseURL(v, COURSE_ADD_URL);
+                    Log.i("TAG", url);
 
-                mListener.addCourse(url, bitmap, mCourseId);
+                    mListener.addCourse(url, bitmap, mCourseId);
+
+                }else {
+                    mCourseDB.add(mCourseIdEditText.getText().toString(), mCourseShortDescEditText.getText().toString(), mCourseLongDescEditText.getText().toString(), mCoursePrereqsEditText.getText().toString());
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
         });
         editCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = buildCourseURL(v, COURSE_EDIT_URL);
-                mListener.editCourse(url, bitmap, mCourseId);
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    String url = buildCourseURL(v, COURSE_EDIT_URL);
+                    mListener.editCourse(url, bitmap, mCourseId);
+                } else {
+                    Log.d("CHECK", "YES");
+                    mCourseDB.edit(mCourseIdEditText.getText().toString(), mCourseShortDescEditText.getText().toString(), mCourseLongDescEditText.getText().toString(), mCoursePrereqsEditText.getText().toString());
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
         });
         uploadButton.setOnClickListener(new View.OnClickListener() {

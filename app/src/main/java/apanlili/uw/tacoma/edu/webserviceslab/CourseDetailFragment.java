@@ -151,7 +151,7 @@ public class CourseDetailFragment extends Fragment {
             sb.append(".png");
             String pathway = sb.toString();
             new DownloadImageTask(mCourseImage)
-                    .execute(pathway);
+                   .execute(pathway);
 
 
         }

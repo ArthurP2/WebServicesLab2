@@ -1,6 +1,8 @@
 package apanlili.uw.tacoma.edu.webserviceslab;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +25,11 @@ public class MyCourseRecyclerViewAdapter extends RecyclerView.Adapter<MyCourseRe
 
     public MyCourseRecyclerViewAdapter(List<Course> items, OnListFragmentInteractionListener listener) {
         mValues = items;
+
         mListener = listener;
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

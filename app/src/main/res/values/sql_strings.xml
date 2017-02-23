@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="CREATE_COURSE_SQL">
+    CREATE TABLE IF NOT EXISTS Course
+    (id TEXT PRIMARY KEY, shortDesc TEXT,
+    longDesc TEXT, prereqs TEXT, image TEXT)
+</string>
+
+<string name="DROP_COURSE_SQL">
+    DROP TABLE IF EXISTS Course
+</string>
+
+</resources>
